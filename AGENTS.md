@@ -1,6 +1,14 @@
-# CODING 저장소 작업 지침
+# 코테 Word 문서 코드 추출 및 아카이브 지침
 
-이 파일은 이 저장소에서 작업하는 모든 Codex 에이전트에게 적용된다.
+이 파일은 사용자가 제공한 Word 문서에서 코드를 추출해 CODING 저장소에 정리하는 모든 Codex 에이전트에게 적용된다.
+
+## 가장 중요한 해석
+
+- 이 작업의 출발점이자 기준은 **저장소가 아니라 사용자가 제공한 Word 문서**다.
+- 현재 작업 폴더가 어디인지는 중요하지 않다. 아래 절대 경로를 사용하므로 사용자가 저장소 폴더를 직접 열거나 이동할 필요가 없다.
+- 기본 입력 문서는 `C:\Users\oie22\OneDrive\Desktop\코테 정답.docx`이고, 기본 출력 저장소는 `C:\Users\oie22\CODING`이다.
+- 사용자가 이후 다른 문서 파일이나 경로를 명시하면, 가장 최근에 제공된 문서를 입력 원본으로 사용한다.
+- 저장소 탐색은 이미 추출된 코드를 비교하고 결과를 저장하기 위한 보조 단계다. 새 코드의 존재 여부와 내용은 반드시 Word 문서를 직접 읽어 판단한다.
 
 ## 적용 범위
 
@@ -10,14 +18,15 @@
 
 ## 작업 목표
 
-`PLAN`은 사용자가 나중에 문제와 풀이를 빠르게 찾아 복습하기 위한 아카이브다. 정답 코드는 원문 그대로 보존하고, 가독성은 Day 폴더, 파일명, 순서, README 목차로 개선한다.
+사용자가 제공한 Word 문서에서 문제별 정답 코드와 학습 주석을 빠짐없이 추출한다. 추출된 결과는 사용자가 나중에 문제와 풀이를 빠르게 찾아 복습할 수 있도록 `PLAN`에 정리한다. 정답 코드는 원문 그대로 보존하고, 가독성은 Day 폴더, 파일명, 순서, README 목차로 개선한다.
 
 ## 원본과 결과 위치
 
-- 읽을 원본: `C:\Users\oie22\OneDrive\Desktop\코테 정답.docx`
-- 저장 위치: `PLAN/DAY1`, `PLAN/DAY2`, `PLAN/DAY3`, ...
-- 사람용 운영 설명: `PLAN/README.md`
-- Day별 목차: `PLAN/DAY숫자/README.md`
+- 기본 입력 원본: `C:\Users\oie22\OneDrive\Desktop\코테 정답.docx`
+- 대상 저장소: `C:\Users\oie22\CODING`
+- 저장 위치: `C:\Users\oie22\CODING\PLAN\DAY1`, `DAY2`, `DAY3`, ...
+- 사람용 운영 설명: `C:\Users\oie22\CODING\PLAN\README.md`
+- Day별 목차: `C:\Users\oie22\CODING\PLAN\DAY숫자\README.md`
 
 ## 절대 원칙
 
@@ -36,13 +45,15 @@
 
 ### 1. 사전 확인
 
-- `git status --short --branch`로 브랜치와 기존 변경 사항을 확인한다.
+- 현재 작업 폴더를 신뢰하지 말고 대상 저장소를 `C:\Users\oie22\CODING`으로 명시한다.
+- `git -C "C:\Users\oie22\CODING" status --short --branch`로 브랜치와 기존 변경 사항을 확인한다.
 - DOCX의 존재 여부, 수정 시각, 크기를 확인한다.
-- `PLAN/README.md`와 해당 Day의 README를 읽는다.
+- `C:\Users\oie22\CODING\PLAN\README.md`와 해당 Day의 README를 읽는다.
 - 기존 변경 사항이 있으면 작업 대상과 겹치지 않도록 보존한다.
 
 ### 2. DOCX 읽기
 
+- 저장소에 있는 코드만 훑고 끝내지 않는다. 매번 입력 DOCX 자체를 새로 연다.
 - 가능하면 Microsoft Word COM을 읽기 전용으로 열어 `Document.Content.Text`를 가져온다.
 - Word 텍스트의 `[char]13`은 LF로 바꾸고 문서 끝 표시 `[char]7`은 제거한다.
 - `[char]11`은 Word 내부 구간 구분자로 활용할 수 있지만, **구간 하나가 항상 문제 하나라는 가정은 하지 않는다.**
@@ -77,7 +88,8 @@
 
 ### 6. Git 반영
 
-- `git fetch origin`으로 원격 상태를 확인한다.
+- 모든 Git 명령은 현재 작업 폴더에 기대지 않고 `git -C "C:\Users\oie22\CODING" ...` 형태로 실행한다.
+- `git -C "C:\Users\oie22\CODING" fetch origin`으로 원격 상태를 확인한다.
 - 이번에 만든 정답 파일과 해당 README만 경로를 명시해 `git add`한다.
 - 커밋 전에 `git diff --cached --stat`과 스테이징 파일 목록을 확인한다.
 - 의미가 드러나는 영어 커밋 메시지를 사용한다. 예: `docs: add Day 3 brute force solutions`.
