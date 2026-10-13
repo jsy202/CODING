@@ -4,7 +4,7 @@ using namespace std;
 
 int K, N;
 
-void go(int n, vector<int> v)
+void go(int n, vector<int> &v)
 {
     if(n == N) {
         for(int j : v) {
